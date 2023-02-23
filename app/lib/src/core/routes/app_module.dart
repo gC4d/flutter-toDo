@@ -11,18 +11,13 @@ import '../services/realm/realm_config.dart';
 class AppModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind.singleton(
-          (i) => AppStore(ConfigurationServiceImpl(Realm(config))),
-        ),
-        Bind.instance<Realm>(Realm(config)),
-        Bind.factory<ConfigurationService>(
-          (i) => ConfigurationServiceImpl(Realm(config)),
-        ),
+        AutoBind.singleton(AppStore.new),
+        AutoBind.instance<Realm>(Realm(config)),
+        AutoBind.singleton<ConfigurationService>(ConfigurationServiceImpl.new),
       ];
   @override
   List<ModularRoute> get routes => [
         ModuleRoute('/home', module: HomeModule()),
-        ChildRoute('/config',
-            child: (context, args) => const ConfigurationPage())
+        ChildRoute('/config', child: (context, args) => ConfigurationPage())
       ];
 }
